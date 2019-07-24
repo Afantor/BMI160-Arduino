@@ -30,20 +30,20 @@ You should connect some digital out pin to the CSB of the BMI160 and tell the nu
 You should connect SDO/SA0 pin of the BMI160 to GND for default I2C address or tell the I2C address to the initialize method, begin().
 ![Screenshot](files/wiring2.png)
 
-## Code
+## Example Code
 ```
 #include <BMI160Gen.h>
 
-const int select_pin = 10;
-const int i2c_addr = 0x68;
+const int irq_pin = 2;
+const int i2c_addr = 0x69;
 
 void setup() {
-  Serial.begin(9600); // initialize Serial communication
+  Serial.begin(115200); // initialize Serial communication
   while (!Serial);    // wait for the serial port to open
 
   // initialize device
-  BMI160.begin(BMI160GenClass::SPI_MODE, select_pin);
-  //BMI160.begin(BMI160GenClass::I2C_MODE, i2c_addr);
+  //BMI160.begin(BMI160GenClass::SPI_MODE, select_pin);
+  BMI160.begin(BMI160GenClass::I2C_MODE, i2c_addr, irq_pin);
 }
 
 void loop() {
@@ -69,9 +69,24 @@ void loop() {
 
 Board           |MCU         |tested works|doesn't work|not tested| Notes
 ----------------|------------|------------|------------|----------|-----
-Arduino UNO     |ATmega328P  | X          |            |          |
+Arduino UNO     |ATmega328P  | X          |            |          | D2 pin for INT1
 Arduino 101     |Intel Curie | X          |            |          |
-Arduino Leonardo|ATmega32u4  | X          |            |          | D7 pin for INT
-Arduino M0 PRO  |ATSAMD21G   | X          |            |          | D7 pin for INT
+Arduino Leonardo|ATmega32u4  | X          |            |          | D7 pin for INT1
+Arduino M0 PRO  |ATSAMD21G   | X          |            |          | D7 pin for INT1
+ESP32-Dev-Kit   |ESP32       | X          |            |          | D2 pin for INT1
+Bluefruit52     |nRF52832    | X          |            |          | P0.30 pin for INT1
 
 Other boards which have the same MCU might be work well.
+
+## Arduino example
+
+* [Accelerometer](https://github.com/Afantor/BMI160-Arduino/tree/master/examples/Accelerometer)  This sketch example demonstrates how the BMI160 on the Intel(R) Curie(TM) module can be used to read accelerometer data.
+* [AccelerometerOrientation](https://github.com/Afantor/BMI160-Arduino/tree/master/examples/AccelerometerOrientation)  This sketch example demonstrates how the BMI160 on the Intel(R) Curie(TM) module can be used to read accelerometer data and translate it to an orientation.
+* [FreeFallDetect](https://github.com/Afantor/BMI160-Arduino/tree/master/examples/FreeFallDetect)  This sketch example demonstrates how the BMI160 accelerometer on theIntel(R) Curie(TM) module can be used to detect free fall events.
+* [Gyro](https://github.com/Afantor/BMI160-Arduino/tree/master/examples/Gyro)  This sketch example demonstrates how the BMI160 on the Intel(R) Curie(TM) module can be used to read Gyro data.
+* [MotionDetect](https://github.com/Afantor/BMI160-Arduino/tree/master/examples/MotionDetect)  This sketch example demonstrates how the BMI160 accelerometer on theIntel(R) Curie(TM) module can be used to detect motion events.
+* [ShockDetect](https://github.com/Afantor/BMI160-Arduino/tree/master/examples/ShockDetect)  This sketch example demonstrates how the BMI160 accelerometer on theIntel(R) Curie(TM) module can be used to detect shocks or sudden movements.
+* [StepCount](https://github.com/Afantor/BMI160-Arduino/tree/master/examples/StepCount)  This sketch example demonstrates how the BMI160 accelerometer on theIntel(R) Curie(TM) module can be used as a Step Counter (pedometer).
+* [TapDetect](https://github.com/Afantor/BMI160-Arduino/tree/master/examples/TapDetect)  This sketch example demonstrates how the BMI160 accelerometer on theIntel(R) Curie(TM) module can be used to detect tap events.
+* [TapDoubleDetect](https://github.com/Afantor/BMI160-Arduino/tree/master/examples/TapDoubleDetect)  This sketch example demonstrates how the BMI160 accelerometer on theIntel(R) Curie(TM) module can be used to detect tap double events.
+* [ZeroMotionDetect](https://github.com/Afantor/BMI160-Arduino/tree/master/examples/ZeroMotionDetect)  This sketch example demonstrates how the BMI160 accelerometer on theIntel(R) Curie(TM) module can be used to detect zero motion events.
